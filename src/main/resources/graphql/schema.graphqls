@@ -1,0 +1,54 @@
+scalar Date @specifiedBy(url:"https://tools.ietf.org/html/rfc3339")
+scalar Url @specifiedBy(url:"https://www.w3.org/Addressing/URL/url-spec.txt")
+
+type Query {
+    persons: [Person]
+    person(id: ID!): Person
+    posts: [Post]
+    post(id: ID!): Post
+    comments: [Comment]
+    comment(id: ID!): Comment
+}
+
+type Mutation {
+    createPerson(person: PersonInput): Person
+    deletePerson(id: ID!): Person
+#    createPost(post: PostInput): Post
+    deletePost(id: ID!): Post
+}
+
+input PersonInput {
+    firstName: String!
+    lastName: String!
+}
+
+input PostInput {
+    title: String!
+    content: String!
+    authorId: ID!
+}
+
+type Person {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    posts: [Post!]
+    comments: [Comment!]
+}
+
+type Post {
+    id: ID!
+    title: String!
+    content: String!
+    author: Person!
+    comments: [Comment!]
+}
+
+type Comment {
+    id: ID!
+    content: String!
+    author: Person
+    post: Post
+    parent: Comment
+    children: [Comment]
+}
