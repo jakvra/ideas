@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.ALL;
@@ -51,7 +52,7 @@ public class Comment {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "parent", cascade = ALL)
-    private List<Comment> children;
+    private List<Comment> children = new ArrayList<>();
 
     @Builder
     public Comment(String content, User author, Post post, Comment parent) {

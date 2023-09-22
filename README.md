@@ -1,116 +1,138 @@
 # ideas
 
-
-get postgres IP:
-```bash
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ideas_postgres```
+#### execution using maven:
+prerequisitie: maven, docker installed   
+bellow command starts the PostgreSQL db within the docker container and connects to it
+```shell
+mvn spring-boot:run
 ```
 
-run application (replace IP):
-```bash
-java -Dspring.datasource.url=jdbc:postgresql://172.20.0.2:5432/ideas -Dideas.random.data=true -jar target/ideas-0.0.1-SNAPSHOT.jar
-```
-
+#### Example graphql queries/mutations:
 ```graphql
 query users {
-  users {
-    id
-    firstName
-    lastName
-    posts {
-			id	
-      title
-    }
-    comments {
-      content
-      post {
+    users {
         id
-      }
+        firstName
+        lastName
+        dateOfBird
     }
-  }
 }
 
 query user {
-  user(id: 2) {
-    id
-    firstName
-    lastName
-    posts {
-      title
+    user(id: 1) {
+        id
+        firstName
+        lastName
+        dateOfBird
+        posts(first: 2) {
+            edges {
+                node {
+                    content
+                }
+            }
+            pageInfo {
+                hasPreviousPage
+                hasNextPage
+                startCursor
+                endCursor
+            }
+        }
+        comments(first: 2) {
+            edges {
+                node {
+                    content
+                  	children {
+                      content
+                    }
+                }
+            }
+            pageInfo {
+                hasPreviousPage
+                hasNextPage
+                startCursor
+                endCursor
+            }
+        }
     }
-  }
 }
 
 query posts {
-  posts {
-    id
-    title
-    comments {
-      id
-      content
-      children {
+    posts {
         id
-        content
-      }
+        title
+        comments {
+            id
+            content
+            children {
+                id
+                content
+            }
+        }
     }
-  }
+}
+
+query authorPosts {
+    authorPosts(authorId: 1) {
+        title
+        content
+        comments {
+            content
+        }
+    }
 }
 
 query post {
-  post(id: 1) {
-    id
-    title
-    comments {
-      id
-      content
-      post {
+    post(id: 1) {
         id
-      }
-      children {
-        id
-        content
-      }
+        title
+        comments {
+            id
+            content
+            post {
+                id
+            }
+            children {
+                id
+                content
+            }
+        }
     }
-  }
 }
 
 query comments {
-  comments {
-    id
-    content
-    author {
-      firstName
-      lastName
+    comments {
+        id
+        content
+        author {
+            firstName
+            lastName
+        }
+        post {
+            title
+        }
+        parent {
+            id
+        }
+        children {
+            id
+            content
+        }
     }
-    post {
-      title
-    }
-    parent {
-      id
-    }
-    children {
-      id
-      content
-    }
-  }
 }
 
-mutation createPerson {
-  createPerson(user: {firstName: "John", lastName: "Doe"}) {
-    id
-    firstName
-    lastName
-    posts {
-      title
+mutation createUser {
+    createUser(user: {firstName: "John", lastName: "Doe", dateOfBird:"2020-12-20"}) {
+        id
+        firstName
+        lastName
     }
-  }
 }
 
-mutation deletePerson {
-  deletePerson(id: 8) {
-    id
-    firstName
-    lastName
-  }
+mutation deleteUser {
+    deleteUser(id: 8) {
+        id
+        firstName
+        lastName
+    }
 }
 ```

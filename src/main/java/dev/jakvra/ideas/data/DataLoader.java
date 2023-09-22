@@ -9,7 +9,6 @@ import dev.jakvra.ideas.persistance.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -75,7 +74,17 @@ public class DataLoader implements CommandLineRunner {
                 .author(post.getAuthor())
                 .parent(null) // TODO:
                 .build())
-        ).limit(3).forEach(comment -> log.info("Comment: {}", comment));
+        ).limit(3).forEach(comment -> {
+            Comment childComment = Comment.builder()
+                    .content(faker.lorem().paragraph())
+                    .post(post)
+                    .author(post.getAuthor())
+                    .parent(comment)
+                    .build();
+            commentReposiroty.save(childComment);
+            comment.getChildren().add(childComment);
+            log.info("Sub-Comment: {}", comment);
+        });
         return post;
     }
 

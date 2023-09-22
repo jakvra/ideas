@@ -1,12 +1,12 @@
 package dev.jakvra.ideas.controller;
 
+import dev.jakvra.ideas.graphql.UserInput;
 import dev.jakvra.ideas.persistance.domain.Comment;
 import dev.jakvra.ideas.persistance.domain.Post;
+import dev.jakvra.ideas.persistance.domain.User;
 import dev.jakvra.ideas.persistance.repository.CommentReposiroty;
 import dev.jakvra.ideas.persistance.repository.PostReposiroty;
 import dev.jakvra.ideas.persistance.repository.UserRepository;
-import dev.jakvra.ideas.persistance.domain.User;
-import dev.jakvra.ideas.graphql.UserInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.ScrollPosition;
@@ -62,6 +62,7 @@ public class UserController {
         return userRepository.save(User.builder()
                 .firstName(user.firstName())
                 .lastName(user.lastName())
+                .dateOfBird(user.dateOfBird())
                 .build());
     }
 

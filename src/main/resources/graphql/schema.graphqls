@@ -14,13 +14,13 @@ type Query {
 type Mutation {
     createUser(user: UserInput): User
     deleteUser(id: ID!): User
-#    createPost(post: PostInput): Post
     deletePost(id: ID!): Post
 }
 
 input UserInput {
     firstName: String!
     lastName: String!
+    dateOfBird: Date!
 }
 
 input PostInput {
