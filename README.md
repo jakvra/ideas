@@ -6,6 +6,10 @@ bellow command starts the PostgreSQL db within the docker container and connects
 ```shell
 mvn spring-boot:run
 ```
+within maven installed, it should be possible use the maven wrapper:
+```shell
+./mvnw spring-boot:run
+```
 
 #### Example graphql queries/mutations:
 ```graphql
