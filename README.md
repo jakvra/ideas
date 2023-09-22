@@ -1,8 +1,19 @@
 # ideas
 
+
+get postgres IP:
+```bash
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ideas_postgres```
+```
+
+run application (replace IP):
+```bash
+java -Dspring.datasource.url=jdbc:postgresql://172.20.0.2:5432/ideas -Dideas.random.data=true -jar target/ideas-0.0.1-SNAPSHOT.jar
+```
+
 ```graphql
-query persons {
-  persons {
+query users {
+  users {
     id
     firstName
     lastName
@@ -19,8 +30,8 @@ query persons {
   }
 }
 
-query person {
-  person(id: 2) {
+query user {
+  user(id: 2) {
     id
     firstName
     lastName
@@ -85,7 +96,7 @@ query comments {
 }
 
 mutation createPerson {
-  createPerson(person: {firstName: "John", lastName: "Doe"}) {
+  createPerson(user: {firstName: "John", lastName: "Doe"}) {
     id
     firstName
     lastName

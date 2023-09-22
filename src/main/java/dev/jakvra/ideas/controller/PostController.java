@@ -1,5 +1,7 @@
-package dev.jakvra.ideas.post;
+package dev.jakvra.ideas.controller;
 
+import dev.jakvra.ideas.persistance.repository.PostReposiroty;
+import dev.jakvra.ideas.persistance.domain.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -18,6 +20,11 @@ public class PostController {
     @QueryMapping
     public List<Post> posts() {
         return postReposiroty.findAll();
+    }
+
+    @QueryMapping
+    public List<Post> authorPosts(@Argument Long authorId) {
+        return postReposiroty.findByAuthorId(authorId);
     }
 
     @QueryMapping

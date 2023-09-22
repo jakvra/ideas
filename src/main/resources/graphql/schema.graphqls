@@ -2,22 +2,23 @@ scalar Date @specifiedBy(url:"https://tools.ietf.org/html/rfc3339")
 scalar Url @specifiedBy(url:"https://www.w3.org/Addressing/URL/url-spec.txt")
 
 type Query {
-    persons: [Person]
-    person(id: ID!): Person
+    users: [User]
+    user(id: ID!): User
     posts: [Post]
+    authorPosts(authorId: ID!): [Post!]
     post(id: ID!): Post
     comments: [Comment]
     comment(id: ID!): Comment
 }
 
 type Mutation {
-    createPerson(person: PersonInput): Person
-    deletePerson(id: ID!): Person
+    createUser(user: UserInput): User
+    deleteUser(id: ID!): User
 #    createPost(post: PostInput): Post
     deletePost(id: ID!): Post
 }
 
-input PersonInput {
+input UserInput {
     firstName: String!
     lastName: String!
 }
@@ -28,26 +29,27 @@ input PostInput {
     authorId: ID!
 }
 
-type Person {
+type User {
     id: ID!
     firstName: String!
     lastName: String!
-    posts: [Post!]
-    comments: [Comment!]
+    dateOfBird: Date!
+    posts(first: Int,last: Int,before: String,after: String): PostConnection
+    comments(first: Int,last: Int,before: String,after: String): CommentConnection
 }
 
 type Post {
     id: ID!
     title: String!
     content: String!
-    author: Person!
+    author: User!
     comments: [Comment!]
 }
 
 type Comment {
     id: ID!
     content: String!
-    author: Person
+    author: User
     post: Post
     parent: Comment
     children: [Comment]

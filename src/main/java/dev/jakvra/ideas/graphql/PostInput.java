@@ -1,4 +1,4 @@
-package dev.jakvra.ideas.post;
+package dev.jakvra.ideas.graphql;
 
 public record PostInput(
         String title,

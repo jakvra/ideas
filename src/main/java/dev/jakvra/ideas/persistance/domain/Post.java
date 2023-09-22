@@ -1,7 +1,6 @@
-package dev.jakvra.ideas.post;
+package dev.jakvra.ideas.persistance.domain;
 
-import dev.jakvra.ideas.comment.Comment;
-import dev.jakvra.ideas.person.Person;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,17 +31,18 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Column(columnDefinition = "VARCHAR(1024)")
     private String content;
     @NotNull
     @ToString.Exclude
     @ManyToOne(fetch = LAZY)
-    private Person author;
+    private User author;
     @ToString.Exclude
     @OneToMany(mappedBy = "post", cascade = ALL)
     private List<Comment> comments;
 
     @Builder
-    public Post(String title, String content, Person author) {
+    public Post(String title, String content, User author) {
         this.title = title;
         this.content = content;
         this.author = author;

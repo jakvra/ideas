@@ -1,7 +1,5 @@
-package dev.jakvra.ideas.comment;
+package dev.jakvra.ideas.persistance.domain;
 
-import dev.jakvra.ideas.person.Person;
-import dev.jakvra.ideas.post.Post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,13 +31,13 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content", nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(1024)")
     private String content;
 
     @NotNull
     @ToString.Exclude
     @ManyToOne(fetch = LAZY)
-    private Person author;
+    private User author;
 
     @ToString.Exclude
     @ManyToOne(fetch = LAZY)
@@ -56,7 +54,7 @@ public class Comment {
     private List<Comment> children;
 
     @Builder
-    public Comment(String content, Person author, Post post, Comment parent) {
+    public Comment(String content, User author, Post post, Comment parent) {
         this.content = content;
         this.author = author;
         this.post = post;
